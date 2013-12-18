@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" ng-app="todoListApp" ng-csp>
+<head>
+  <meta charset="utf-8">
+  <title>ToDo App</title>
+  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="lib/jquery-ui/css/ui-lightness/jquery-ui-1.10.2.custom.min.css">
+  <script src="lib/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/directives.js"></script>
+  <script src="lib/jquery-ui/js/jquery-1.9.1.js"></script>
+  <script src="lib/jquery-ui/js/jquery-ui-1.10.2.custom.js"></script>
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+  -->
+  
+  <!--
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+  -->
+</head>
+<body>
+  <div >
+	  <h1>Todo</h1>
+	  
+	  <div ng-controller="MyCtrl">
+	  <div>
+		<button prompt-dialog="true">Add new task project</button>
+		<div id="dialog" title="Project add dialog" style="display:none">
+			<form ng-submit="addProj()">
+				<input type="text" ng-model="projectName"  size="30"
+					 placeholder="add new project here">
+				<input id="subBtn" class="btn-primary" type="submit" value="Done" close-dialog="true">
+			</form>
+		</div>
+		<button>Collapse</button>
+	  </div>
+		<!--start-->
+		<!---->
+		<div id="tabs" ng-repeat="project in projects">
+			<div id="tab_{{project.id}}">
+			<!---->
+				<div class="TaskListFull-{{project.isTasklistFull}}">Task List is full</div>
+				<h3 troggleTaskList="true" moreButton="true">{{project.name}}&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn-primary" show-proj-dialog="{{project.id}}"  style="display:none">rename</button><button class="btn-primary" confirm="{{project.id}}" style="display:none">remove</button></h3>
+				
+				<div class="taskContainer" style="display:none">
+					<span>{{remaining(project.id)}} of {{project.task.length}} remaining</span>
+					[ <a href="" ng-click="archive(project.id)">archive</a> ]
+					<ol class="unstyled">
+					  <li ng-repeat="todo in project.task" moreButton="true">
+						<input type="checkbox" ng-model="todo.done">
+						<span class="done-{{todo.done}}" contentEditable="true" ng-model="todo.text" >{{todo.text}}</span>
+						<!--task name rename dialog-->
+						<div id="taskRenameDialog_{{project.id}}_{{todo.id}}" title="Task rename dialog" style="display:none">
+							<form ng-submit="rename(project.id,todo.id)">
+								<input type="text" ng-model="todo.text"  size="30"
+									 placeholder="rename task here">
+								<input id="subBtn" class="btn-primary" type="submit" value="Done" close-dialog="true">
+							</form>
+						</div>
+						&nbsp;&nbsp;&nbsp;
+						<button class="btn-primary" show-task-dialog="{{project.id}}_{{todo.id}}" style="display:none">Edit</button>
+						<button class="btn-primary" ng-click="remove(project.id,todo.id)" style="display:none">remove</button><!--remove btn should always be the last one-->
+					  </li>
+
+					</ol>
+					
+					<form ng-submit="addTodo(project.id)">
+					  <input type="text" ng-model="project.todoText"  size="30"
+							 placeholder="add new todo here">
+					  <input id="subBtn" class="btn-primary" type="submit" value="add">
+					</form>
+				</div>
+				<!---->
+			</div>
+			<!--dialog area-->
+			<!--project name rename dialog-->
+			<div id="projRenameDialog_{{project.id}}" title="Project Rename dialog" style="display:none">
+				<form ng-submit="renameProj(project.id)">
+					<input type="text" ng-model="project.name"  size="30"
+						 placeholder="rename project here">
+					<input id="subBtn" class="btn-primary" type="submit" value="Done" close-dialog="true">
+				</form>
+			</div>
+			<div id="projRemoveDialog_{{project.id}}" title="Project Remove confirmation dialog" style="display:none">	
+			</div>
+		</div>
+		<!---->
+		<!--end-->
+		
+	  </div>
+  </div>
+</body>
+</html>

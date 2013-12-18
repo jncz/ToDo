@@ -1,0 +1,14 @@
+{
+  "name": "ECM defect viewer",
+  "description" : "To use, type 'cq' plus a search term into the CQ.",
+  "version": "1.1",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "omnibox": { "keyword" : "cq" },
+  "permissions": [
+		"cookies",
+		"*://svs1cqw01/"
+	],
+  "manifest_version": 2
+}
